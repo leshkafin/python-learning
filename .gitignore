@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+tasks.txt
+hello.txt
+numbers.txt
