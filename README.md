@@ -18,3 +18,14 @@
 - Python 3.14
 - `requests` для API
 - Git для версионирования
+
+## WB Analytics
+
+Для запуска нужны:
+1. `WB_API_TOKEN` в `.env`
+2. Запустить `wb_orders.py`, `wb_sales.py`, `wb_cards.py` — создадут JSON-файлы
+3. Создать `cost.csv` со своими себестоимостями:
+supplierArticle,cost_rub
+YOUR-SKU-1,1000
+YOUR-SKU-2,500
+4. Запустить `wb_analyze.py`
