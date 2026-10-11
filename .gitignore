@@ -2,6 +2,7 @@
 .env
 __pycache__/
 *.pyc
+
 tasks.txt
 hello.txt
 numbers.txt
@@ -9,4 +10,7 @@ numbers.txt
 wb_cards.json
 wb_orders.json
 wb_sales.json
+wb_finance.json
+wb_finance_year.json
 cost.csv
+cost_cny.csv
