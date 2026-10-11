@@ -1,16 +1,36 @@
+# Python
 .venv/
-.env
 __pycache__/
 *.pyc
+*.pyo
 
-tasks.txt
-hello.txt
-numbers.txt
+# Secrets
+.env
 
+# Cost files
+cost.csv
+cost_cny.csv
+cost_ym.csv
+
+# WB data
 wb_cards.json
 wb_orders.json
 wb_sales.json
 wb_finance.json
 wb_finance_year.json
-cost.csv
-cost_cny.csv
+
+# YM data
+ym_orders*.json
+ym_realization.json
+
+# YM reports
+ym_*.xlsx
+ym_report*.xlsx
+
+# Old test files
+tasks.txt
+hello.txt
+numbers.txt
+
+# VS Code
+.vscode/
