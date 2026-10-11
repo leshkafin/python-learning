@@ -11,7 +11,7 @@ token = os.getenv("WB_API_TOKEN")
 
 
 
-# Дата 7 дней назад в формате "ГГГГ-ММ-ДД"
+# Дата 30 дней назад в формате "ГГГГ-ММ-ДД"
 date_from = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
 print(date_from)
 
