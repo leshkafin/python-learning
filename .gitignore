@@ -19,6 +19,8 @@ wb_sales.json
 wb_finance.json
 wb_finance_year.json
 wb_promo_stats.json
+wb_payments.csv
+
 
 # YM data
 ym_orders*.json
