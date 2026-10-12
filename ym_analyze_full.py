@@ -11,6 +11,9 @@ total_cost = 0
 total_orders = 0
 monthly = []
 
+# Буст продаж — реальные расходы из ЛК YM (все с твоего счёта, бонусов 0)
+BOOST_TOTAL = 20067.66
+
 def find_col(df, *keywords):
     for c in df.columns:
         cs = str(c)
@@ -146,15 +149,27 @@ print(f"Заказов:              {total_orders:>10,}")
 print(f"Выручка:              {total_revenue:>10,.2f} ¥")
 print(f"Себес:               -{total_cost:>10,.2f} ¥")
 print(f"Комиссии YM:         -{total_commission:>10,.2f} ¥")
+print(f"Буст продаж:         -{BOOST_TOTAL:>10,.2f} ¥")
 print("-" * 40)
-net_profit = total_revenue - total_cost - total_commission
+net_profit = total_revenue - total_cost - total_commission - BOOST_TOTAL
 print(f"ЧИСТАЯ ПРИБЫЛЬ:       {net_profit:>10,.2f} ¥")
 if monthly:
     print(f"В месяц:              {net_profit/len(monthly):>10,.2f} ¥")
+print(f"Маржа:                {net_profit / total_revenue * 100:>10,.2f} %")
 
 print("\n" + "=" * 60)
 print("ПО МЕСЯЦАМ (CNY)")
 print("=" * 60)
 mdf = pd.DataFrame(monthly)
 mdf["profit"] = mdf["revenue"] - mdf["cost"] - mdf["commission"]
+print(mdf.round(2).to_string(index=False))
+
+print("\n" + "=" * 60)
+print("ПО МЕСЯЦАМ (с распределённым бустом)")
+print("=" * 60)
+
+mdf = pd.DataFrame(monthly)
+mdf["boost"] = (mdf["revenue"] / mdf["revenue"].sum()) * BOOST_TOTAL
+mdf["profit_with_boost"] = mdf["revenue"] - mdf["cost"] - mdf["commission"] - mdf["boost"]
+mdf["margin_%"] = (mdf["profit_with_boost"] / mdf["revenue"] * 100).round(1)
 print(mdf.round(2).to_string(index=False))
