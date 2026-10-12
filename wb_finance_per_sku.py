@@ -27,14 +27,6 @@ for col in cols_to_convert:
 
 # Группируем значения по "vendorCode" - это артикул товара на WB
 grouped = df.groupby("vendorCode").sum()
-print(grouped)
-
-# Сначала сохранили общее
-total_promo_other = grouped[grouped.index == ""]["deduction"].sum()
-print(f"\nОбщее продвижение (без артикула): {total_promo_other}")
-
-# Убрали пустую строку из таблицы
-grouped = grouped[grouped.index != ""]
 
 # Читаем файл cost_cny.csv и делаем список cost_df
 cost_df = pd.read_csv("cost_cny.csv")
@@ -46,7 +38,9 @@ merged = merged.set_index("supplierArticle")
 #Сортируем по алфавиту
 merged = merged.sort_index()
 
-print(merged.shape)
+# Удаляем пустые строки
+merged = merged[merged.index != ""]
+
 print(merged)
 
 # Полный себес = цена за штуку × количество
@@ -67,19 +61,14 @@ print("\nВывод: артикул + ключевые метрики")
 print(merged[["forPay", "total_cost", "profit"]])
 print(f"\nОбщая прибыль (без рекламы): {merged['profit'].sum():,.2f} ¥")
 
-# Распределяем рекламу по выручке
-merged["promo_share"] = merged["forPay"] / merged["forPay"].sum()
-merged["promo"] = merged["promo_share"] * total_promo_other
+# Реальные расходы на рекламу (списания со СЧЁТА из ЛК WB)
+REAL_PROMO_RUB = 116163
+RATE = 12
+real_promo_cny = REAL_PROMO_RUB / RATE
 
-# Финальная прибыль
-merged["final_profit"] = merged["profit"] - merged["promo"]
-
-# Таблица
-print(merged[["forPay", "profit", "promo", "final_profit"]])
-
-# Итог
-print(f"\n=== ИТОГ ===")
-print(f"Прибыль без рекламы:  {merged['profit'].sum():>10,.2f} ¥")
-print(f"Реклама:             -{merged['promo'].sum():>10,.2f} ¥")
-print(f"ЧИСТАЯ ПРИБЫЛЬ:       {merged['final_profit'].sum():>10,.2f} ¥")
-print(f"Маржа:                {merged['final_profit'].sum() / merged['forPay'].sum() * 100:>10,.2f} %")
+print(f"\n=== ФИНАЛ ===")
+print(f"Прибыль (с deduction): {merged['profit'].sum():,.2f} ¥")
+print(f"Списано со счёта: {REAL_PROMO_RUB:,.0f} ₽ = {real_promo_cny:,.2f} ¥")
+final = merged['profit'].sum() - real_promo_cny
+print(f"ЧИСТАЯ ПРИБЫЛЬ: {final:,.2f} ¥")
+print(f"Маржа: {final / merged['forPay'].sum() * 100:.2f} %")
